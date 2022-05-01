@@ -1,0 +1,41 @@
+<div class="product-form__info-item">
+    <span class="product-form__info-title text--strong {% if recommended_products == true %} hidden {% endif %}">{{ 'product.form.inventory' | t }}:</span>
+
+    <div class="product-form__info-content">
+      {%- if selected_variant.available -%}
+        {%- if selected_variant.inventory_management and selected_variant.inventory_policy == 'deny' and block.settings.low_inventory_threshold > 0 -%}
+          {%- if selected_variant.inventory_quantity <= block.settings.low_inventory_threshold -%}
+            <span class="product-form__inventory inventory inventory--low text-[13px] font-bold text-secondary700">{{ 'product.form.low_stock_with_quantity_count' | t: count: selected_variant.inventory_quantity }}</span>
+          {%- else -%}
+            <span class="product-form__inventory inventory inventory--high text-[13px] font-bold text-secondary700">{{ 'product.form.in_stock_with_quantity_count' | t: count: selected_variant.inventory_quantity }}</span>
+          {%- endif -%}
+        {%- else -%}
+          {%- if selected_variant.inventory_policy == 'continue' and selected_variant.inventory_quantity <= 0 and selected_variant.requires_shipping -%}
+            {%- if selected_variant.incoming -%}
+              {%- capture next_incoming_date -%}{{ selected_variant.next_incoming_date | date: format: 'date' }}{%- endcapture -%}
+              <span class="product-form__inventory inventory inventory--high text-[13px] font-bold text-secondary700">{{ 'product.form.incoming_stock' | t: next_incoming_date: next_incoming_date }}</span>
+            {%- else -%}
+              <span class="product-form__inventory inventory inventory--high text-[13px] font-bold text-secondary700">{{ 'product.form.oversell_stock' | t }}</span>
+            {%- endif -%}
+          {%- else -%}
+            <span class="product-form__inventory inventory inventory--high text-[13px] font-bold text-secondary700">{{ 'product.form.in_stock' | t }}</span>
+          {%- endif -%}
+        {%- endif -%}
+      {%- else -%}
+        <span class="product-form__inventory inventory text-secondary700 text-[13px] font-bold">{{ 'product.form.sold_out' | t }}</span>
+      {%- endif -%}
+
+      {%- for tag in product.tags -%}
+        {%- if tag contains '__stock:' -%}
+          {%- assign stock_countdown_max = tag | split: '__stock:' | last | times: 1.0 -%}
+          {%- assign stock_countdown_progress = selected_variant.inventory_quantity | divided_by: stock_countdown_max | times: 100.0 | at_least: 0 | at_most: 100 -%}
+
+          <span class="inventory-bar {% if stock_countdown_progress == 0 %}inventory-bar--hidden{% endif %}" data-stock-countdown-max="{{ stock_countdown_max }}">
+            <span class="inventory-bar__progress" style="width: 100%"></span>
+          </span>
+
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>

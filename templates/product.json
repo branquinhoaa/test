@@ -1,0 +1,183 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "product_meta": {
+          "type": "product_meta",
+          "settings": {
+            "show_vendor": true,
+            "show_sku": true,
+            "show_reviews_badge": true,
+            "show_share_buttons": true
+          }
+        },
+        "variant_selector": {
+          "type": "variant_selector",
+          "settings": {
+            "selector_mode": "block",
+            "color_mode": "color",
+            "show_quantity_selector": true,
+            "show_taxes_included": false,
+            "show_inventory_quantity": true,
+            "low_inventory_threshold": 5
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_payment_button": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "display_mode": "show_all"
+          }
+        },
+        "b7c3a6c5-9051-4bfa-801c-b02c4bdc99a2": {
+          "type": "reviews",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "product_meta",
+        "variant_selector",
+        "buy_buttons",
+        "description",
+        "b7c3a6c5-9051-4bfa-801c-b02c4bdc99a2"
+      ],
+      "settings": {
+        "image_size": "small",
+        "enable_video_looping": false,
+        "enable_image_zoom": true,
+        "zoom_effect": "outside",
+        "carousel_effect": "fade"
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "blocks": {
+        "c6ad91ce-decd-4b8e-89d6-bf4b09ad044b": {
+          "type": "product",
+          "settings": {
+            "product": "{{ product }}"
+          }
+        },
+        "ab246166-d940-4a80-9f3d-3cd898a1bff0": {
+          "type": "product",
+          "settings": {
+            "product": "{{ product }}"
+          }
+        },
+        "ada6b587-c73e-48ec-8bac-c31453deed83": {
+          "type": "product",
+          "settings": {
+            "product": "{{ product }}"
+          }
+        },
+        "aa897cdf-55c0-450a-a158-1e666e795c4a": {
+          "type": "product",
+          "settings": {
+            "product": "{{ product }}"
+          }
+        },
+        "4daf8849-bcfc-44e6-84f2-a8d745c4a98e": {
+          "type": "product",
+          "settings": {
+            "product": "{{ product }}"
+          }
+        },
+        "296faac6-a287-40cb-a07d-e9bdbe0c4dc9": {
+          "type": "product",
+          "settings": {
+            "product": "{{ product }}"
+          }
+        }
+      },
+      "block_order": [
+        "c6ad91ce-decd-4b8e-89d6-bf4b09ad044b",
+        "ab246166-d940-4a80-9f3d-3cd898a1bff0",
+        "ada6b587-c73e-48ec-8bac-c31453deed83",
+        "aa897cdf-55c0-450a-a158-1e666e795c4a",
+        "4daf8849-bcfc-44e6-84f2-a8d745c4a98e",
+        "296faac6-a287-40cb-a07d-e9bdbe0c4dc9"
+      ],
+      "settings": {
+        "heading": "Complete your wheel and tire package",
+        "show_quick_buy": true
+      }
+    },
+    "recently-viewed-products": {
+      "type": "recently-viewed-products",
+      "disabled": true,
+      "settings": {
+        "title": "Recently viewed",
+        "show_quick_buy": true
+      }
+    },
+    "1643405919de049699": {
+      "type": "text-with-icons",
+      "blocks": {
+        "1643405919b580fc4a-0": {
+          "type": "item",
+          "settings": {
+            "icon": "bi-delivery",
+            "title": "Free delivery worldwide",
+            "content": "<p>Short content about your store<\/p>"
+          }
+        },
+        "1643405919b580fc4a-1": {
+          "type": "item",
+          "settings": {
+            "icon": "bi-returns",
+            "title": "Satisfied or refunded",
+            "content": "<p>Short content about your store<\/p>"
+          }
+        },
+        "1643405919b580fc4a-2": {
+          "type": "item",
+          "settings": {
+            "icon": "bi-customer-support",
+            "title": "Top-notch support",
+            "content": "<p>Short content about your store<\/p>"
+          }
+        },
+        "1643405919b580fc4a-3": {
+          "type": "item",
+          "settings": {
+            "icon": "bi-secure-payment",
+            "title": "Secure payments",
+            "content": "<p>Short content about your store<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "1643405919b580fc4a-0",
+        "1643405919b580fc4a-1",
+        "1643405919b580fc4a-2",
+        "1643405919b580fc4a-3"
+      ],
+      "settings": {
+        "stack_mobile": false
+      }
+    },
+    "16434059316b76cbf4": {
+      "type": "newsletter",
+      "settings": {
+        "title": "Let's keep in touch!",
+        "content": "<p>Subscribe to our weekly newsletter and receive exclusive offers on products you love!<\/p>",
+        "background": "#112b78",
+        "text": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product-recommendations",
+    "recently-viewed-products",
+    "1643405919de049699",
+    "16434059316b76cbf4"
+  ]
+}

@@ -1,0 +1,48 @@
+<div class="main-car-search xlg:w-[90%] xlg:ml-[5%] gap-2 xlg:items-end xlg:h-[145px] sm:flex sm:flex-col sm:h-[323px] sm:items-center sm:mb-[80px]">
+    <h3 class="text-[24px] font-bold xlg:absolute xlg:top-[12px] sm:relative sm:text-[16px]">
+        Shop for your vehicle
+    </h3>
+    <div class="year-selector sm:mb-[5px]">
+        <select id="vehicle-year" class=" w-[187px] md:w-[140px] sm:w-[260px] sm:h-[48px] sm:leading-none" name="year" onchange="loadMakes(event.target.value)">
+            <option class="option" value="0">Year</option>
+        </select>
+    </div>
+    <div class="make-selector sm:mb-[5px]">
+        <select id="vehicle-make" class="w-[187px] md:w-[140px] sm:w-[260px] sm:h-[48px] sm:leading-none" name="make" onchange="loadModels(event.target.value)">
+            <option class="option" value="0">Make</option>
+        </select>
+    </div>
+    <div class="model-selector sm:mb-[5px]">
+        <select id="vehicle-model" class="w-[187px] md:w-[140px] sm:w-[260px] sm:h-[48px] sm:leading-none" name="model" onchange="loadSubmodels(event.target.value)">
+            <option class="option" value="0">Model</option>
+        </select>
+    </div>
+
+    <!-- <div class="submodel-selector">
+        <select id="vehicle-submodel" name="submodel" onchange="loadSizes(event.target.value)">
+            <option class="option" value="0">Sub-model</option>
+        </select>
+    </div>
+
+    <div class="size-selector">
+        <select id="vehicle-size" name="size" onchange="buildFinalQuery(event.target.value)">
+            <option class="option" value="0">Size</option>
+        </select>
+    </div> -->
+
+    <form action="{{ routes.search_url }}">
+        <input id="search-for-products" name="q" placeholder="Search" type="hidden" value=""/>
+        <input name="type" type="hidden" value="product"/>
+        <input id="carFitmentData" name="carFitmentData" type="hidden" value="carFitmentData"/>
+        <input id="hubbore" name="hubbore" type="hidden" value=""/>
+        <input id="maxWheelLoad" name="maxWheelLoad" type="hidden" value=""/>
+        <input id="offsetMinFront" name="offsetMinFront" type="hidden" value=""/>
+        <input id="offsetMaxFront" name="offsetMaxFront" type="hidden" value=""/>
+        <input id="carEspecification" name="carEspecification" type="hidden" value=""/>
+        <div class="bg-primary800 w-[117px] lg:w-[100px] md:w-[90px] sm:w-[260px] sm:mb-[10px] font-semibold rounded-full gap-2 text-white px-[12px] py-[18px] flex justify-center items-center sm:h-[48px] sm:leading-none">
+            <input id="submit-search-products" type="submit" value="Go"/>
+            <img src='//cdn.shopify.com/s/files/1/0590/1457/8337/files/Icon_280x.png?v=1650996005' class='max-w-[20px]'>
+        </div>
+    </form>
+
+</div>

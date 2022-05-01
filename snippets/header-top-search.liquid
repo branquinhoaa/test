@@ -1,0 +1,169 @@
+<header class="header header--{{ section.settings.desktop_navigation_layout }} {% unless section.settings.show_condensed_search %}header--search-expanded{% endunless %}" role="banner">
+    <div class="container">
+        <div class="header__inner">
+        {%- comment -%}
+        --------------------------------------------------------------------------------------
+        MOBILE NAV
+        --------------------------------------------------------------------------------------
+        {%- endcomment -%}
+
+          <nav class="header__mobile-nav hidden-lap-and-up">
+            <button class="header__mobile-nav-toggle icon-state touch-area" data-action="toggle-menu" aria-expanded="false" aria-haspopup="true" aria-controls="mobile-menu" aria-label="{{ 'header.navigation.open_menu' | t }}">
+              <span class="icon-state__primary">{%- render 'icon', icon: 'hamburger-mobile' -%}</span>
+              <span class="icon-state__secondary">{%- render 'icon', icon: 'close' -%}</span>
+            </button>
+
+            {%- render 'mobile-menu', menu: navigation_mobile_menu -%}
+          </nav>            
+
+        {%- comment -%}
+        --------------------------------------------------------------------------------------
+        LOGO COMPONENT
+        --------------------------------------------------------------------------------------
+        {%- endcomment -%}
+
+        {%- capture header_logo -%}
+                <a href="{{ routes.root_url }}" class="header__logo-link desktop-logo">
+                    {%- if section.settings.logo != blank -%}
+                        {%- capture image_size -%}
+                            {{ section.settings.logo_max_width }}x
+                        {%- endcapture -%}
+                        <span class="visually-hidden">{{ shop.name }}</span>
+                        <img class="header__logo-image" style="max-width: {{ section.settings.logo_max_width }}px" width="{{ section.settings.logo.width }}" height="{{ section.settings.logo.height }}" src="{{ section.settings.logo | img_url: image_size, scale: 2 }}" alt="{{ section.settings.logo.alt | default: shop.name | escape }}">
+                    {%- else -%}
+                        <span class="header__logo-text">{{ shop.name }}</span>
+                    {%- endif -%}
+                </a>
+        {%- endcapture -%}
+        <a href="{{ routes.root_url }}" class="header__logo-link mobile-logo">
+            <img class="header__logo-image" src="https://cdn.shopify.com/s/files/1/0590/1457/8337/files/logo_256x256_crop_center.png?v=1650375558" alt="wheel hippo mobile logo">
+        </a>
+
+        {%- if request.page_type == 'index' -%}
+            <h1 class="header__logo">{{ header_logo }}</h1>
+        {%- else -%}
+            <div class="header__logo">{{ header_logo }}</div>
+        {%- endif -%}
+
+        {%- comment -%}
+        --------------------------------------------------------------------------------------
+        SEARCH COMPONENT
+        --------------------------------------------------------------------------------------
+        {%- endcomment -%}
+
+            <div class="header__search-bar-wrapper {% unless section.settings.show_condensed_search %}is-visible{% endunless %}">
+                <form action="{{ routes.search_url }}" method="get" role="search" class="search-bar">
+                    {%- assign search_menu = linklists[section.settings.search_menu] -%}
+
+                    <div class="search-bar__top-wrapper">
+                        <div class="search-bar__top">
+                            <input name="type" type="hidden" value="product">
+                            <input name="options[prefix]" type="hidden" value="last">
+                            <input type="hidden" name="options[unavailable_products]" value="{{ settings.search_unavailable_products }}">
+
+                            <div class="search-bar__input-wrapper bg-neutral-100 rounded-full">
+                                <input class="search-bar__input px-8 py-2" type="text" name="q" autocomplete="off" autocorrect="off" aria-label="{{ 'header.search.input_placeholder' | t }}" placeholder="{{ 'header.search.input_placeholder' | t }}">
+                                <button class="search-bar__input-clear hidden-lap-and-up" data-action="clear-input" type="button">
+                                    <span class="visually-hidden">{{ 'header.search.clear' | t }}</span>
+                                    {% render 'icon', icon: 'close' %}
+                                </button>
+                            </div>
+
+                            {%- comment -%}The type detection is sometimes a bit inaccurate as it returns empty type, so we do an additional logic{%- endcomment -%}
+
+                            {%- assign has_at_least_one_type = false -%}
+                            {%- for product_type in shop.types -%}
+                                {%- if product_type != blank -%}
+                                    {%- assign has_at_least_one_type = true -%}
+                                    {%- break -%}
+                                {%- endif -%}
+                            {%- endfor -%}
+
+                            {%- if section.settings.show_search_filter and has_at_least_one_type -%}
+                                <div class="search-bar__filter">
+                                    <label class="search-bar__filter-label" for="search-product-type">
+                                        <span class="search-bar__filter-active">{{ 'header.search.all_categories' | t }}</span>
+                                        {%- render 'icon', icon: 'arrow-bottom' -%}
+                                    </label>
+
+                                    <select id="search-product-type">
+                                        <option selected="selected" value="">{{ 'header.search.all_categories' | t }}</option>
+
+                                        {%- for product_type in shop.types -%}
+                                            {%- if product_type != blank -%}
+                                                <option value="{{ product_type | escape }}">{{ product_type | escape }}</option>
+                                            {%- endif -%}
+                                        {%- endfor -%}
+                                    </select>
+                                </div>
+                            {%- endif -%}
+
+                            <button type="submit" class="search-bar__submit rounded-full w-20 absolute right-0" aria-label="{{ 'header.search.submit' | t }}">
+                                {%- render 'icon', icon: 'search' -%}
+                                {%- render 'icon', icon: 'search-loader' -%}
+                            </button>
+                        </div>
+
+                        <button class="search-bar__close-button hidden-tablet-and-up" data-action="unfix-search" type="button">
+                            <span class="search-bar__close-text">{{ 'header.search.close_search' | t }}</span>
+                        </button>
+                    </div>
+
+                    <div class="search-bar__inner">
+                        <div aria-hidden="true" class="search-bar__results">
+                            <div class="skeleton-container">
+                                {%- for i in (1..3) -%}
+                                    <div class="search-bar__result-item search-bar__result-item--skeleton">
+                                        <div class="search-bar__image-container">
+                                            <div class="aspect-ratio aspect-ratio--square">
+                                                <div class="skeleton-image"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="search-bar__item-info">
+                                            <div class="skeleton-paragraph">
+                                                <div class="skeleton-text"></div>
+                                                <div class="skeleton-text"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {%- endfor -%}
+                            </div>
+
+                            <div class="search-bar__results-inner">
+                                {%- comment -%}Placeholder div for real results{%- endcomment -%}
+                            </div>
+                        </div>
+
+                        {%- if search_menu.links.size > 0 -%}
+                            <div aria-hidden="true" class="search-bar__menu-wrapper">
+                                {%- if section.settings.show_search_menu_title -%}
+                                    <p class="search-bar__menu-title heading">{{ search_menu.title }}</p>
+                                {%- endif -%}
+
+                                <ul class="search-bar__menu-linklist list--unstyled" role="list">
+                                    {%- for link in search_menu.links -%}
+                                        <li>
+                                            <a href="{{ link.url }}" class="search-bar__menu-link">{{ link.title }}</a>
+                                        </li>
+                                    {%- endfor -%}
+                                </ul>
+                            </div>
+                        {%- endif -%}
+                    </div>
+                </form>
+            </div>
+
+            {%- comment -%}
+        --------------------------------------------------------------------------------------
+        HEADER ACTIONS
+        --------------------------------------------------------------------------------------
+        {%- endcomment -%}
+
+ 
+        {% render 'header-actions'%}
+           
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,112 @@
+@tailwind utilities;
+
+.mobile-logo img {
+  display: none;
+}
+
+.nav-bar__item {
+  position: static;
+}
+
+.nav-bar__item:hover .mega-menu {
+  visibility: visible;
+  opacity: 1;
+  z-index: 2;
+}
+
+.main-car-search select{
+  background: #F5F5F5;
+  border: 1px solid #DBDBDB;
+  box-sizing: border-box;
+  border-radius: 58px;
+  padding:12px 24px;
+  appearance: none; 
+  background-image: url('../../assets/chevron-down.png');
+  background-repeat: no-repeat;
+  background-position-x: 90%;
+  background-position-y: 16px;
+  background-size: 20px;
+}
+
+a.promo-block{
+  background: linear-gradient(101.42deg, rgba(80, 171, 216, 0.59) -44.97%, rgba(53, 147, 193, 0.59) -44.96%, rgba(0, 15, 61, 0.59) 99.98%) !important;
+}
+
+.lift-kits  {
+  background-color: #F5F5F5;
+  padding: 50px 0;
+  .image-with-text{
+    flex-direction: row-reverse;
+  }
+}
+
+.quick-links__link{
+  border: 1px solid #F5F5F5;
+}
+
+@media screen and (max-width: 1276px) {
+.block-list__item {
+  display: flex;
+  flex: 1 !important;
+  min-width: 50%;
+}
+}
+
+@media screen and (max-width: 1000px) {
+  .lift-kits .image-with-text{ 
+    flex-direction: column-reverse;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .mobile-logo img {
+    display: block;
+    width: 148px;
+  }
+  .desktop-logo img {
+    display: none;
+  }
+  .header__search-bar-wrapper.is-visible {
+    z-index: 9;
+  }
+  .header__action-item.header__action-item--account {
+    position: absolute;
+    right: 80px;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    min-height: 64px;
+  }
+  .header > .container {
+    width: 100%;
+  }
+  .header--search-expanded {
+    margin-bottom: 59px;
+  }
+  #account-popover {
+    right: -80px;
+    left: unset;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .slideshow-text-wrapper {
+    transform: skewX(-12deg);
+  }
+  .slideshow-text-wrapper h2 {
+    transform: skewX(12deg);
+  }
+  .slideshow__content-wrapper {
+    position: absolute;
+    top: -60px;
+  }
+  .flickity-viewport {
+    overflow: visible;
+  }
+
+  .block-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

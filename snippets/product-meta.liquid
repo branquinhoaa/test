@@ -1,0 +1,80 @@
+{%- assign selected_variant = product.selected_or_first_available_variant -%}
+
+<div class="product-meta">
+  {%- if template.name == 'product' and template != 'product.quick-view' -%}
+    <h1 class="product-meta__title heading h1  text-[24px] text-primary800 font-semibold">{{ product.title }}</h1>
+  {%- else -%}
+    <h3 class="product-meta__title heading h2  text-[22px] text-primary800">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+  {%- endif -%}
+
+  {%- capture product_labels -%}
+    {%- for tag in product.tags -%}
+      {%- if tag contains '__label:' -%}
+        <span class="product-label product-label--custom1">{{ tag | split: '__label:' | last }}</span>
+      {%- endif -%}
+
+      {%- if tag contains '__label1:' -%}
+        <span class="product-label product-label--custom1">{{ tag | split: '__label1:' | last }}</span>
+      {%- endif -%}
+
+      {%- if tag contains '__label2:' -%}
+        <span class="product-label product-label--custom2">{{ tag | split: '__label2:' | last }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if settings.show_discount -%}
+      {%- assign savings = 0 -%}
+
+      {%- if settings.discount_mode == 'percentage' -%}
+        {%- assign savings = selected_variant.compare_at_price | minus: selected_variant.price | times: 100.0 | divided_by: selected_variant.compare_at_price | round | append: '%' -%}
+      {%- else -%}
+        {%- capture savings -%}<span>{{ selected_variant.compare_at_price | minus: selected_variant.price | money }}</span>{%- endcapture -%}
+      {%- endif -%}
+
+      <span class="product-label product-label--on-sale" {% unless selected_variant.price < selected_variant.compare_at_price %}style="display: none"{% endunless %}>{{ 'collection.product.discount_html' | t: savings: savings }}</span>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- if product_labels != blank -%}
+    <div class="product-meta__label-list">
+      {{- product_labels -}}
+    </div>
+  {%- endif -%}
+
+  {%- if block.settings.show_vendor or block.settings.show_sku -%}
+    <div class="product-meta__reference">
+      {%- if block.settings.show_vendor -%}
+        {%- assign vendor_handle = product.vendor | handle -%}
+        {%- assign collection_for_vendor = collections[vendor_handle] -%}
+
+        {%- unless collection_for_vendor.empty? -%}
+          <a class="product-meta__vendor link link--accented text-primary800" href="{{ collection_for_vendor.url }}">{{ product.vendor }}</a>
+        {%- else -%}
+          <a class="product-meta__vendor link link--accented text-primary800" href="{{ product.vendor | url_for_vendor }}">{{ product.vendor }}</a>
+        {%- endunless -%}
+      {%- endif -%}
+
+      {%- if block.settings.show_sku -%}
+        <span class="product-meta__sku" {% if selected_variant.sku == blank %}style="display: none"{% endif %}>
+          {{- 'product.general.sku' | t -}} <span class="product-meta__sku-number">{{ selected_variant.sku }}</span>
+        </span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if block.settings.show_reviews_badge -%}
+    <a href="{% if template.name != 'product' or template == 'product.quick-view' %}{{ product.url }}{% endif %}#product-reviews" class="product-meta__reviews-badge link" data-offset="30">
+      {%- render 'product-rating', product: product -%}
+    </a>
+  {%- endif -%}
+
+  {%- if block.settings.show_share_buttons -%}
+    <div class="product-meta__share-buttons hidden-phone">
+      {{ share_buttons }}
+    </div>
+  {%- endif -%}
+</div>
+
+<hr class="card__separator">

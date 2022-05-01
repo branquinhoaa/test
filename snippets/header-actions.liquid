@@ -1,0 +1,120 @@
+{%- if section.settings.show_condensed_search -%}
+<div class="header__action-item hidden-tablet-and-up">
+    <a class="header__action-item-link" href="{{ routes.search_url }}" data-action="toggle-search" aria-expanded="false" aria-label="{{ 'header.search.open_search' | t }}">{% render 'icon', icon: 'search' %}</a>
+</div>
+{%- endif -%}
+
+{%- if shop.customer_accounts_enabled -%}
+<div class="header__action-item header__action-item--account">
+    {%- if customer -%}
+        <span class="header__action-item-title hidden-pocket hidden-lap">{{ 'header.general.welcome' | t: first_name: customer.first_name | truncate: 20 }}</span>
+    {%- endif -%}
+
+    <div class="header__action-item-content cursor-pointer">
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="header__action-item-link header__account-icon icon-state hidden-desk" aria-label="{{ 'header.general.account' | t }}" aria-controls="account-popover" aria-expanded="false" data-action="toggle-popover" {% if customer %} data-follow-link="phone" {% endif %}>
+            <span class="icon-state__primary">{%- render 'icon', icon: 'account' -%}</span>
+            <span class="icon-state__secondary">{%- render 'icon', icon: 'close' -%}</span>
+        </a>
+
+        <a  class="header__action-item-link hidden-pocket hidden-lap" aria-controls="account-popover" aria-expanded="false" data-action="toggle-popover">
+            {{ 'header.general.login' | t }}
+        </a>
+
+        <div aria-hidden="true" class="popover {% if customer %}popover--logged{% else %}popover--large popover--unlogged{% endif %} z-20" id="account-popover">
+            {%- render 'icon', icon: 'nav-triangle-borderless' -%}
+
+            {%- if customer -%}
+                <div class="popover__inner popover__inner--no-padding">
+                    <div class="popover__linklist">
+                        <a class="popover__link-item" href="{{ routes.account_url }}">{{ 'customer.general.orders' | t }}</a>
+                        <a class="popover__link-item" href="{{ routes.account_addresses_url }}">{{ 'customer.general.addresses' | t }}</a>
+                        <a class="popover__link-item" href="{{ routes.account_logout_url }}" data-no-instant>{{ 'customer.general.logout' | t }}</a>
+                    </div>
+                </div>
+            {%- else -%}
+                <div class="popover__panel-list">
+                    {%- comment -%}LOGIN{%- endcomment -%}
+                    <div class="popover__panel popover__panel--default is-selected" id="header-login-panel">
+                        <div class="popover__inner">
+                            {%- form 'customer_login', name: 'login', class: 'form', id: 'header_customer_login' -%}
+                                <header class="popover__header">
+                                    <h2 class="popover__title heading">{{ 'customer.login.login' | t }}</h2>
+                                    <p class="popover__legend">{{ 'customer.login.description' | t }}</p>
+                                </header>
+
+                                <div class="form__input-wrapper form__input-wrapper--labelled">
+                                    <input autocomplete="email" class="form__field form__field--text" id="login-customer[email]" name="customer[email]" required="required" type="email">
+                                    <label class="form__floating-label" for="login-customer[email]">{{ 'customer.login.email' | t }}</label>
+                                </div>
+
+                                <div class="form__input-wrapper form__input-wrapper--labelled">
+                                    <input autocomplete="current-password" class="form__field form__field--text" id="login-customer[password]" name="customer[password]" required="required" type="password">
+                                    <label class="form__floating-label" for="login-customer[password]">{{ 'customer.login.password' | t }}</label>
+                                </div>
+
+                                <button class="form__submit button button--primary button--full" type="submit">{{ 'customer.login.submit' | t }}</button>
+                            {%- endform -%}
+
+                            <div class="popover__secondary-action">
+                                <p>{{ 'customer.login.new_customer' | t }}
+                                    <a href="{{ routes.account_register_url }}" class="link link--accented">{{ 'customer.login.create_your_account' | t }}</a>
+                                </p>
+                                <p>{{ 'customer.login.lost_password' | t }}
+                                    <a href="{{ routes.account_url }}#recover-password" aria-controls="header-recover-panel" class="link link--accented">{{ 'customer.login.recover_password' | t }}</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {%- comment -%}RECOVER{%- endcomment -%}
+                    <div class="popover__panel popover__panel--sliding" id="header-recover-panel">
+                        <div class="popover__inner">
+                            {%- form 'recover_customer_password', name: 'recover', class: 'form' -%}
+                                <header class="popover__header">
+                                    <h2 class="popover__title heading">{{ 'customer.recover_password.recover_password' | t }}</h2>
+                                    <p class="popover__legend">{{ 'customer.recover_password.description' | t }}</p>
+                                </header>
+
+                                <div class="form__input-wrapper form__input-wrapper--labelled">
+                                    <input class="form__field form__field--text" id="recover-customer[recover_email]" name="email" required="required" type="email">
+                                    <label class="form__floating-label" for="recover-customer[recover_email]">{{ 'customer.recover_password.email' | t }}</label>
+                                </div>
+
+                                <button class="form__submit button button--primary button--full" type="submit">{{ 'customer.recover_password.submit' | t }}</button>
+                            {%- endform -%}
+
+                            <div class="popover__secondary-action">
+                                <p>{{ 'customer.recover_password.remembered_your_password' | t }}
+                                    <button aria-controls="header-login-panel" class="link link--accented" data-action="show-popover-panel">{{ 'customer.recover_password.back_to_login' | t }}</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {%- endif -%}
+        </div>
+    </div>
+</div>
+{%- endif -%}
+
+<div class="header__action-item header__action-item--cart">
+<a class="header__action-item-link header__cart-toggle" href="{{ routes.cart_url }}" {% if settings.cart_type != 'page' and template != 'cart' %} aria-controls="mini-cart" aria-expanded="false" data-action="toggle-mini-cart" {% endif %} data-no-instant>
+    <div class="header__action-item-content">
+        <div aria-expanded="false" class="header__cart-icon icon-state mx-2">
+            <span class="icon-state__primary">
+                {%- render 'icon', icon: 'cart' -%}
+                {%- if customer -%}
+                  <span class="header__cart-count">{{ cart.item_count }}</span>      
+                {%- endif -%}
+            </span>
+            <span class="icon-state__secondary">{%- render 'icon', icon: 'close' -%}</span>
+        </div>
+
+        <span class="hidden-pocket hidden-lap">{{ 'header.general.cart' | t }}</span>
+    </div>
+</a>
+
+{%- if settings.cart_type != 'page' and template != 'cart' -%}
+    {%- render 'mini-cart' -%}
+{%- endif -%}
+</div>
